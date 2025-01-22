@@ -1,0 +1,16 @@
+1: 4283162641 - too high
+2: 780711947 - too high
+3: 194991433 - only checked every 1000 numbers
+4: 13286162 - not right apparently
+5: 3191770485 - too high
+6: 295741589 - only checked every 1000 numbers
+7:
+8: 332248829 - not right apparently
+9: 749391108 - too high
+10: 412475023 - didn't try
+
+Final answer for part 2 was Starting Seed Number = 2243422640, location value = 2008785, from group 7
+First ran through group 7 using every 1000 numbers, then every 500 numbers. found the starting number from the lowest value.
+Then checked a large range around that initial starting value to find the eventual lowest value.
+
+HOLEY MOLEY that one was tough.
