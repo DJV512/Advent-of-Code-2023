@@ -2,6 +2,7 @@
 FILENAME = "input.txt"
 
 import time
+from collections import defaultdict
 
 def main():
     start = time.time()
@@ -32,13 +33,51 @@ def parse_data():
         data = data.split(",")
     return data
 
+def hash(string):
+    current_value = 0
+    for char in string:
+        current_value += ord(char)
+        current_value *= 17
+        current_value = current_value  % 256
+    return current_value
+        
 
 def part1(data):
-    return None
+    total = 0
+    for string in data:
+        total += hash(string)
+    return total
 
 
 def part2(data):
-    return None
+    boxes = defaultdict(list)
+    for string in data:
+        if "=" in string:
+            label, focal = string.split("=")
+            box = hash(label)
+            if not any(label in value for value in boxes[box]):
+                boxes[box].append(f"{label} {focal}")
+            else:
+                for i, value in enumerate(boxes[box].copy()):
+                    if label in value:
+                        boxes[box][i] = f"{label} {focal}"
+        else:
+            label = string[:-1]
+            box = hash(label)
+            for value in boxes[box].copy():
+                    if label in value:
+                        boxes[box].remove(value)
+
+    for box in boxes:
+        print(f"{box}: {boxes[box]}")
+
+    total = 0
+    for key in boxes:
+        for i, value in enumerate(boxes[key]):
+            total += ((key+1)*(i+1)*(int(value[-1])))
+
+
+    return total
 
 
 if __name__ == "__main__":
