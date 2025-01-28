@@ -1,13 +1,20 @@
-#FILENAME = "sample_input.txt"
-FILENAME = "input.txt"
+FILENAME = "sample_input.txt"
+#FILENAME = "input.txt"
 
 import time
 
-RESET = "\033[0m"       # Resets all styles
-RED = "\033[31m"        # Red text
-GREEN = "\033[32m"      # Green text
-YELLOW = "\033[33m"     # Yellow text
-BLUE = "\033[34m"       # Blue text
+RESET = "\033[0m"         # Resets all styles
+BLACK = "\033[30;1m"      # Black text
+RED = "\033[31;1m"        # Red text
+GREEN = "\033[32;1m"      # Green text
+YELLOW = "\033[33;1m"     # Yellow text
+BLUE = "\033[34;1m"       # Blue text
+MAGENTGA = "\033[35;1m"   # Magenta text
+CYAN = "\033[36;1m"       # Cyan text
+WHITE = "\033[37;1m"      # White text
+
+BOLD = "\033[1m"          # Bold text
+UNDERLINE = "\033[4m"     # Underlined text
 
 def main():
     start = time.time()
