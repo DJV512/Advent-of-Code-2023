@@ -5,10 +5,7 @@ import time
 # from PIL import Image
 import sys
 
-
-sys.setrecursionlimit(1000000)
-
-
+sys.setrecursionlimit(25000)
 
 RESET = "\033[0m"         # Resets all styles
 BLACK = "\033[30;1m"      # Black text
@@ -58,19 +55,19 @@ def parse_data():
     data = [line.split() for line in data]
     return data
 
-def flood_fill(data, position, total_length, total_width):
-    if data[position[0]][position[1]] == "#":
+def flood_fill(map, position, total_length, total_width):
+    if position in map:
         return
     
-    data[position[0]][position[1]] = "#"
+    map.add(position)
 
     for direction in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
         new_position = (position[0]+direction[0], position[1]+direction[1])
 
         if 0 <= new_position[0] < total_length and 0 <= new_position[1] < total_width:
-            flood_fill(data, new_position, total_length, total_width)
+            flood_fill(map, new_position, total_length, total_width)
     
-    return data
+    return map
 
 
 def part1(data):
@@ -126,15 +123,10 @@ def part1(data):
     # img.save("trench.bmp")
     # print(f"Image saved as trench.bmp")
 
-    filled_trench = [["." for _ in range(total_width)] for _ in range(total_length)]
-    for hole in normalized_trench:
-        filled_trench[hole[0]][hole[1]] = "#"
-    
-
     # note to self: position (60, 300) was not found programmatically, but rather I kept changing
     # these values and looking at the filled_trench.bmp image until I had correctly chosen
     # a starting point that was within the enclosed area.
-    data = flood_fill(filled_trench, (60, 300), total_length, total_width)
+    filled_trench = flood_fill(normalized_trench, (3, 4), total_length, total_width)
 
     #Create a new image with a white background
     # img = Image.new("RGB", (total_width, total_length), "white")
@@ -155,14 +147,49 @@ def part1(data):
     total = 0
     for y in range(total_length):
         for x in range(total_width):
-            if data[y][x] == "#":
+            if (y,x) in filled_trench:
                 total += 1
     
     return total
 
 
 def part2(data):
-    return None
+    trench = []
+    border = 0
+    position = (0,0)
+    for (_, _, hex) in data:
+        direction = hex[-2]
+        distance = int(hex[2:7], 16)
+        match direction:
+            case "0":
+                direction = R
+            case "1":
+                direction = D
+            case "2":
+                direction = L 
+            case "3":
+                direction = U
+        position = (position[0]+distance*direction[0], position[1]+distance*direction[1])
+        trench.append(position)
+        border += distance
+
+    # When I saw part 2, I realized that the flood fill algorithm I wrote for part 1
+    # would never work for part 2. The recursion depth would be insane. Checking reddit,
+    # I found a post that offered this formula for determining the area of a polygon.
+    # I have no idea how it works, but it does! It also took some trial and error to realize
+    # that I had to add in the border as well, but half the border plus one. Again,
+    # not sure why half the border, or plus 1, but it worked!
+
+    total = 0
+    for i in range(len(trench)):
+        if i == 0:
+            continue
+        total += (trench[i-1][0]*trench[i][1] - trench[i-1][1]*trench[i][0])
+    total += (trench[-1][0]*trench[0][1] - trench[0][0]*trench[-1][1])
+        
+    total = abs(total/2) + (border/2) + 1
+
+    return total
 
 
 if __name__ == "__main__":
