@@ -17,7 +17,7 @@ BOLD = "\033[1m"          # Bold text
 UNDERLINE = "\033[4m"     # Underlined text
 
 def main():
-    start = time.time()
+    start_time = time.time()
 
     data = parse_data()
     parse_time = time.time()
@@ -32,10 +32,10 @@ def main():
     print()
     print(f"Part 2 Answer: {answer2}")
     print()
-    print(f"Data Parse Execution Time: {1000*(parse_time - start)} ms")
+    print(f"Data Parse Execution Time: {1000*(parse_time - start_time)} ms")
     print(f"Part 1 Execution Time:     {1000*(part1_time - parse_time)} ms")
     print(f"Part 2 Execution Time:     {1000*(part2_time - part1_time)} ms")
-    print(f"Total Execution Time:      {1000*(part2_time - start)} ms")
+    print(f"Total Execution Time:      {1000*(part2_time - start_time)} ms")
     print("---------------------------------------------------")
 
 
