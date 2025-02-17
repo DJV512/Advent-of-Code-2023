@@ -42,6 +42,10 @@ def main():
 def parse_data():
     with open(FILENAME, "r") as f:
         data = f.readlines()
+
+    # # grid based input
+    # data = [list(line.strip()) for line in data]
+
     return data
 
 
